@@ -1,44 +1,7 @@
-import datetime
-from typing import Dict, Any, List
+from typing import List, Dict, Any
 
-
-class VaccineError(Exception):
-    pass
-
-
-class NotVaccinatedError(VaccineError):
-    pass
-
-
-class OutdatedVaccineError(VaccineError):
-    pass
-
-
-class NotWearingMaskError(Exception):
-    pass
-
-
-class Cafe:
-    def __init__(self, name: str) -> None:
-        self.name = name
-
-    def visit_cafe(self, visitor: Dict[str, Any]) -> str:
-        if "vaccine" not in visitor:
-            raise NotVaccinatedError
-
-        vaccine = visitor["vaccine"]
-        expiration_date = vaccine.get("expiration_date")
-        if not isinstance(expiration_date, datetime.date):
-            raise OutdatedVaccineError
-
-        today = datetime.date.today()
-        if expiration_date < today:
-            raise OutdatedVaccineError
-
-        if not visitor.get("wearing_a_mask", False):
-            raise NotWearingMaskError
-
-        return f"Welcome to {self.name}"
+from .cafe import Cafe
+from .errors import VaccineError, NotWearingMaskError
 
 
 def go_to_cafe(friends: List[Dict[str, Any]], cafe: Cafe) -> str:
